@@ -1,4 +1,5 @@
-import { renderOntoNode } from "./index";
+// eslint-disable-next-line import/extensions
+import { renderOntoNode } from "../dist/index.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const div = document.querySelector("div.dagred3");
