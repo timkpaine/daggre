@@ -19,9 +19,9 @@
     "build": "npm-run-all -p build:*",
     "clean": "rimraf dist lib",
     "fix": "yarn lint --fix",
-    "lint": "eslint --ext js src/",
+    "lint": "eslint --ext js src/ example/",
     "test": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --config .jestrc.js --forceExit",
-    "watch:server": "http-server -p 3000",
+    "watch:server": "http-server -p 3000 -o /example",
     "watch:esbuild": "yarn build:esbuild --watch",
     "watch": "npm-run-all -p watch:*"
   },
