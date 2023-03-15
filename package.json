@@ -15,7 +15,7 @@
     "dist/*"
   ],
   "scripts": {
-    "build:esbuild": "esbuild src/index.js src/preview.js --bundle --outdir=dist/",
+    "build:esbuild": "esbuild src/index.js --bundle --format=esm --outdir=dist/",
     "build": "npm-run-all -p build:*",
     "clean": "rimraf dist lib",
     "fix": "yarn lint --fix",
