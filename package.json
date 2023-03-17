@@ -1,37 +1,42 @@
 {
+  "private": true,
   "name": "dagre-d3-lite",
-  "version": "0.1.0",
-  "description": "Convenience layer for dagre-d3",
-  "main": "dist/iexjs.js",
   "repository": "git@github.com:timkpaine/dagre-d3-lite.git",
   "author": "Tim Paine <t.paine154@gmail.com>",
   "license": "Apache-2.0",
   "type": "module",
-  "module": "src/index.js",
-  "browser": "dist/index.js",
-  "unpkg": "dist/index.js",
-  "jsdelivr": "dist/index.js",
-  "files": [
-    "dist/*"
-  ],
   "scripts": {
-    "build:esbuild": "esbuild src/index.js --bundle --format=esm --outdir=dist/",
-    "build": "npm-run-all -p build:*",
-    "clean": "rimraf dist lib",
-    "fix": "yarn lint --fix",
-    "lint": "eslint --ext js src/ example/",
-    "test": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --config .jestrc.js --forceExit",
-    "watch:server": "http-server -p 3000 -o /example",
-    "watch:esbuild": "yarn build:esbuild --watch",
-    "watch": "npm-run-all -p watch:*"
+    "watch:build": "cd js && yarn build:esbuild --watch",
+    "example:js:server": "http-server -p 3000 -o examples/js",
+    "example:js": "npm-run-all -p example:js:server watch:build",
+    "example:py:server": "cd examples/python && uvicorn server:app --host 0.0.0.0 --port 4000 --reload",
+    "example:py": "npm-run-all -p example:py:server watch:build",
+    "example:ipc": "cd examples/ipc && python main.py",
+    "develop:py": "make -C python develop",
+    "develop:js": "cd js; yarn",
+    "develop": "npm-run-all develop:*",
+    "build:js": "cd js; yarn build",
+    "build:py": "make -C python build",
+    "build": "npm-run-all build:*",
+    "lint:py": "make -C python lint",
+    "lint:js": "cd js; yarn lint",
+    "lint": "npm-run-all lint:*",
+    "lints": "yarn lint",
+    "fix:py": "make -C python fix",
+    "fix:js": "cd js; yarn fix",
+    "fix": "npm-run-all fix:*",
+    "checks:py": "make -C python checks",
+    "checks:js": ":",
+    "checks": "npm-run-all checks:py checks:js",
+    "check": "yarn checks",
+    "tests:py": "make -C python tests",
+    "tests:js": "cd js; yarn test",
+    "tests": "npm-run-all tests:*",
+    "test": "yarn tests"
   },
-  "publishConfig": {
-    "access": "public"
-  },
-  "dependencies": {
-    "d3": "^7.8.2",
-    "dagre-d3-es": "^7.0.10"
-  },
+  "workspaces": [
+    "js"
+  ],
   "devDependencies": {
     "esbuild": "^0.17.11",
     "eslint": "^8.36.0",
@@ -42,6 +47,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "http-server": "^14.1.1",
     "jest": "^29.5.0",
+    "jest-junit": "^15.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.4"
   }
