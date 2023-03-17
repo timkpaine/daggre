@@ -7,6 +7,7 @@ export default {
     "\\.(css|less|sass|scss)$": "<rootDir>/tests/styleMock.js",
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/tests/fileMock.js",
   },
+  reporters: [ "default", "jest-junit" ],
   slowTestThreshold: 20,
   testEnvironment: "node",
   testMatch: ["<rootDir>/tests/**/?(*.)+(spec|test).[tj]s?(x)"],
