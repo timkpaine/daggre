@@ -1,0 +1,36 @@
+{
+  "name": "dagre-d3-lite",
+  "version": "0.1.0",
+  "description": "Convenience layer for dagre-d3",
+  "main": "dist/iexjs.js",
+  "repository": "git@github.com:timkpaine/dagre-d3-lite.git",
+  "author": "Tim Paine <t.paine154@gmail.com>",
+  "license": "Apache-2.0",
+  "type": "module",
+  "module": "src/index.js",
+  "browser": "dist/index.js",
+  "unpkg": "dist/index.js",
+  "jsdelivr": "dist/index.js",
+  "files": [
+    "dist/*"
+  ],
+  "scripts": {
+    "build:esbuild": "esbuild src/index.js --bundle --format=esm --outdir=dist/",
+    "build:python": "esbuild src/index.js --bundle --format=esm --outdir=../python/dagred3/static/",
+    "build": "npm-run-all -p build:*",
+    "clean": "rimraf dist lib",
+    "fix": "yarn lint --fix",
+    "lint": "eslint --ext js src/ ../examples/*/*.js",
+    "test": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --config .jestrc.js --forceExit",
+    "watch:server": "http-server -p 3000 -o /examples",
+    "watch:esbuild": "yarn build:esbuild --watch",
+    "watch": "npm-run-all -p watch:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "d3": "^7.8.2",
+    "dagre-d3-es": "^7.0.10"
+  }
+}
