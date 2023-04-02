@@ -1,6 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { graphlib, render } from "dagre-d3-es";
 import * as d3 from "d3";
+import throttle from "lodash/throttle";
+
+import { Model } from "../transports";
+import { Node } from "./node";
+import { Edge } from "./edge";
 
 // Arrowheads - "normal", "vee", "undirected"
 // Curves - https://github.com/d3/d3-shape/blob/v3.2.0/README.md#curveBasis
@@ -87,16 +92,50 @@ const _configureEdgeDefaults = (from, to, options, defaults) => {
   return resolvedOptions;
 };
 
-export class Graph {
+export class Graph extends Model {
+  static name = "Graph";
+
+  // flags
+  _rendered;
+  _ready;
+
+  // map of node name -> node
+  _nodes;
+
+  // list of edges
+  _edges;
+
+  // render point
+  _renderpoint;
+
+  // throttling renderer
+  _throttled_render;
+
   constructor(options = {}) {
+    super();
+    // bind methods
+    this.addNode.bind(this);
+    this.addNodeInst.bind(this);
+    this.addEdge.bind(this);
+    this.addEdgeInst.bind(this);
+    this.render.bind(this);
+    this._calculateInitialScale.bind(this);
+
+    this._throttled_render = throttle(() => this.render(), 200);
+
     // parse out options
     this._defaults = _configureDefaults(options);
 
     // create renderer
     this._renderer = render();
+    this._renderpoint = null;
 
     // create graph
     this._graph = new graphlib.Graph({ directed: this._defaults.directed });
+
+    // create node/edge data
+    this._nodes = new Map(); // node name -> node
+    this._edges = [];
 
     // intiialize graph
     this._graph.setGraph({
@@ -109,24 +148,48 @@ export class Graph {
     this._graph.setDefaultEdgeLabel(() => {});
 
     // setup flags
+    this._ready = false;
     this._rendered = false;
 
     // vars for svg elements
     this._graph_svg_inst = null;
     this._graph_g_inst = null;
 
-    // bind methods
-    this.addNode.bind(this);
-    this.addEdge.bind(this);
-    this.render.bind(this);
-    this._calculateInitialScale.bind(this);
+    // TODO should be done by transport
+    Object.keys(options.nodes || {}).forEach((node_id) => {
+      this.addNodeInst(new Node(options.nodes[node_id]));
+    });
+
+    options.edges?.forEach((edge) => {
+      this.addEdgeInst(new Edge(edge));
+    });
+
+    // mark self as ready
+    this._ready = true;
+  }
+
+  static submodels() {
+    return [Edge, Node];
   }
 
   addNode(name, options = {}) {
+    // TODO use real node obj
+    this._nodes.set(name, name);
+
     this._graph.setNode(
       name,
       _configureNodeDefaults(name, options, this._defaults.node),
     );
+
+    // re-render if necessary
+    if (this._ready) {
+      this._throttled_render();
+    }
+  }
+
+  addNodeInst(node) {
+    // TODO
+    this.addNode(node.name, node);
   }
 
   addEdge(from, to, options = {}) {
@@ -135,15 +198,53 @@ export class Graph {
       to,
       _configureEdgeDefaults(from, to, options, this._defaults.edge),
     );
+
+    // re-render if necessary
+    if (this._ready) {
+      this._throttled_render();
+    }
+  }
+
+  addEdgeInst(edge) {
+    // TODO should be done by transport
+    const fromNode = new Node(edge.from_);
+    const toNode = new Node(edge.to_);
+    this.addNodeInst(fromNode);
+    this.addNodeInst(toNode);
+    this.addEdge(fromNode.name, toNode.name, edge);
+  }
+
+  receive(obj) {
+    if (obj.model instanceof Node) {
+      this.addNodeInst(obj.model);
+    }
+    if (obj.model instanceof Edge) {
+      this.addEdgeInst(obj.model);
+    }
   }
 
   render(onto) {
+    // don't render if not ready
+    if (!this._ready) {
+      return;
+    }
+
+    // if no nodes to render, skip and do later
+    if (this._nodes.size === 0) {
+      this._renderpoint = onto;
+      return;
+    }
+
+    // use `onto` if explicitly called, else use cached renderpoint
+    const renderpoint = onto || this._renderpoint;
+
+    // only run on first rendering
     if (!this._rendered) {
-      // add class to `onto`
-      onto.classList.add("dagred3-container");
+      // add class to `renderpoint`
+      renderpoint.classList.add("dagred3-container");
 
       // create svg and g elements
-      this._graph_svg_inst = d3.select(onto).append("svg");
+      this._graph_svg_inst = d3.select(renderpoint).append("svg");
       this._graph_g_inst = this._graph_svg_inst.append("g");
 
       // setup zoom
@@ -161,8 +262,8 @@ export class Graph {
       // calculate initial scale modifier
       this._calculateInitialScale();
 
-      const width = onto.offsetWidth;
-      const height = onto.offsetHeight;
+      const width = renderpoint.offsetWidth;
+      const height = renderpoint.offsetHeight;
       this._graph_svg_inst.call(
         this._zoom.transform,
         d3.zoomIdentity
@@ -175,10 +276,10 @@ export class Graph {
           )
           .scale(this._defaults.initialScale),
       );
-    }
 
-    // mark as initially rendered
-    this._rendered = true;
+      // mark as initially rendered
+      this._rendered = true;
+    }
   }
 
   _calculateInitialScale() {

@@ -29,8 +29,8 @@ class Graph(BaseModel):
                 # attach graph to node for convenience
                 node._setGraph(self)
 
-                # send to clients
-                self.update(model=node, model_target=self.id)
+            # send to clients
+            self.update(model=node, model_target=self.id)
 
             # return updated
             return self.nodes[node.name]

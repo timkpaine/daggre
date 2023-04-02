@@ -9,7 +9,7 @@
     "watch:build": "cd js && yarn build:esbuild --watch",
     "example:js:server": "http-server -p 3000 -o examples/js",
     "example:js": "npm-run-all -p example:js:server watch:build",
-    "example:py:server": "cd examples/python && uvicorn server:app --host 0.0.0.0 --port 4000 --reload",
+    "example:py:server": "cd examples/python && uvicorn server:app --host 0.0.0.0 --port 4000",
     "example:py": "npm-run-all -p example:py:server watch:build",
     "example:ipc": "cd examples/ipc && python main.py",
     "develop:py": "make -C python develop",
