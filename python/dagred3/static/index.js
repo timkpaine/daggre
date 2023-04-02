@@ -8832,6 +8832,10 @@ function setCreateEdgeLabels(value) {
 }
 
 // ../node_modules/dagre-d3-es/src/dagre-js/intersect/intersect-node.js
+var intersect_node_exports = {};
+__export(intersect_node_exports, {
+  intersectNode: () => intersectNode
+});
 function intersectNode(node, point2) {
   return node.intersect(point2);
 }
@@ -9039,7 +9043,17 @@ function positionNodes(selection2, g) {
   applyTransition(selection2, g).style("opacity", 1).attr("transform", translate);
 }
 
+// ../node_modules/dagre-d3-es/src/dagre-js/intersect/intersect-circle.js
+var intersect_circle_exports = {};
+__export(intersect_circle_exports, {
+  intersectCircle: () => intersectCircle
+});
+
 // ../node_modules/dagre-d3-es/src/dagre-js/intersect/intersect-ellipse.js
+var intersect_ellipse_exports = {};
+__export(intersect_ellipse_exports, {
+  intersectEllipse: () => intersectEllipse
+});
 function intersectEllipse(node, rx, ry, point2) {
   var cx = node.x;
   var cy = node.y;
@@ -9061,6 +9075,12 @@ function intersectEllipse(node, rx, ry, point2) {
 function intersectCircle(node, rx, point2) {
   return intersectEllipse(node, rx, rx, point2);
 }
+
+// ../node_modules/dagre-d3-es/src/dagre-js/intersect/intersect-polygon.js
+var intersect_polygon_exports = {};
+__export(intersect_polygon_exports, {
+  intersectPolygon: () => intersectPolygon
+});
 
 // ../node_modules/dagre-d3-es/src/dagre-js/intersect/intersect-line.js
 function intersectLine(p1, p2, q1, q2) {
@@ -9144,6 +9164,10 @@ function intersectPolygon(node, polyPoints, point2) {
 }
 
 // ../node_modules/dagre-d3-es/src/dagre-js/intersect/intersect-rect.js
+var intersect_rect_exports = {};
+__export(intersect_rect_exports, {
+  intersectRect: () => intersectRect2
+});
 function intersectRect2(node, point2) {
   var x2 = node.x;
   var y2 = node.y;
@@ -9361,7 +9385,254 @@ function createOrSelectGroup(root3, name) {
   return selection2;
 }
 
-// src/graph.js
+// ../node_modules/dagre-d3-es/src/dagre-js/intersect/index.js
+var intersect_exports = {};
+__export(intersect_exports, {
+  circle: () => intersect_circle_exports,
+  ellipse: () => intersect_ellipse_exports,
+  node: () => intersect_node_exports,
+  polygon: () => intersect_polygon_exports,
+  rect: () => intersect_rect_exports
+});
+
+// src/transports/connection.js
+var Connection = class {
+  constructor() {
+    if (this.constructor === Connection) {
+      throw new Error("Abstract classes can't be instantiated.");
+    }
+    this.receiver.bind(this);
+    this.sender.bind(this);
+  }
+  async receiver() {
+    while (true) {
+      const update = await this.receive();
+      await this._transport.receive(this._client_id, update);
+    }
+  }
+  async sender() {
+    while (true) {
+      const update = await this._transport.send(this._client_id);
+      await this.send(update);
+    }
+  }
+  // eslint-disable-next-line no-unused-vars
+  async connect(client_id = "") {
+    throw new Error("Method 'connect' must be implemented.");
+  }
+  async disconnect() {
+    throw new Error("Method 'disconnect' must be implemented.");
+  }
+  async receive() {
+    throw new Error("Method 'receive' must be implemented.");
+  }
+  // eslint-disable-next-line no-unused-vars
+  async send(update) {
+    throw new Error("Method 'send' must be implemented.");
+  }
+};
+
+// src/transports/client.js
+var Client = class extends Connection {
+  constructor(options = {}) {
+    super();
+    this._transport = options.transport;
+    this._client_id = options._client_id || "";
+    this.open.bind(this);
+    this.close.bind(this);
+    this.initial.bind(this);
+    this.handle.bind(this);
+  }
+  async open() {
+    await this.connect(this._client_id);
+    await this._transport.connect();
+    const initial = await this.receive();
+    return this._transport.onInitial(initial);
+  }
+  async close() {
+    await this._transport.disconnect();
+    await this.disconnect();
+  }
+  async initial() {
+    return this.open();
+  }
+  async handle() {
+    await this.receiver();
+    await this.close();
+  }
+};
+
+// src/transports/handler.js
+var WebSocketClient = class extends Client {
+  constructor(options = {}) {
+    super();
+    this._transport = options.transport;
+    this._model = options.model;
+    this._config = options.config;
+    this._protocol = options.protocol || window.location.protocol === "http:" ? "ws:" : "wss:";
+    this._host = options.host || window.location.host;
+    this._path = options.path || "ws";
+    this._connected = false;
+    this._data = new Array();
+    this._datapromise = null;
+    this._datacallback = null;
+    this.connect.bind(this);
+    this.disconnect.bind(this);
+    this.receive.bind(this);
+    this.send.bind(this);
+  }
+  async connect() {
+    this._websocket = new WebSocket(
+      `${this._protocol}//${this._host}/${this._path}`
+    );
+    this._connected = true;
+    this._websocket.onopen = this._on_open.bind(this);
+    this._websocket.onclose = this._on_close.bind(this);
+    this._websocket.onmessage = this._on_receive.bind(this);
+  }
+  async disconnect() {
+    this._websocket.close();
+  }
+  async _on_open() {
+    this._connected = true;
+  }
+  async _on_close(event) {
+    this._connected = false;
+    if (this._datacallback) {
+      this._datacallback.reject(event);
+      this._datacallback = null;
+    }
+  }
+  async _on_receive(event) {
+    this._data.push(event.data);
+    if (this._datacallback) {
+      this._datacallback.resolve(this._data.shift());
+    }
+  }
+  async receive() {
+    if (this._data.length !== 0) {
+      return Promise.resolve(this._data.shift());
+    }
+    if (!this._connected) {
+      return Promise.reject(new Error("Disconnected"));
+    }
+    if (this._datacallback) {
+      return this._datapromise;
+    }
+    this._datapromise = new Promise((resolve, reject) => {
+      this._datacallback = { resolve, reject };
+    });
+    return this._datapromise;
+  }
+  async send(update) {
+    this._websocket.send(update);
+  }
+};
+
+// src/transports/transport.js
+var Transport = class {
+  constructor() {
+    this.models = /* @__PURE__ */ new Map();
+    this.server_models = /* @__PURE__ */ new Map();
+    this.model_map = /* @__PURE__ */ new Map();
+    this.hosts.bind(this);
+  }
+  hosts(model_name, model_type) {
+    this.model_map.set(model_name, model_type);
+  }
+  async connect() {
+  }
+  async disconnect() {
+    this.server_models = /* @__PURE__ */ new Map();
+  }
+  async onInitial(update) {
+    const model = update.model;
+    this.server_models.set(model.id, model);
+    this.models.set("", model);
+    return model;
+  }
+  // #################
+  // # Bidirectional #
+  // #################
+  async send(client_id) {
+    const model = this.models.get(client_id);
+    return await model.get();
+  }
+  async receive(client_id, update) {
+    const model = this.models.get(client_id);
+    await model.receive(update);
+  }
+};
+
+// src/transports/update.js
+var Update = class {
+  constructor(data = {}) {
+    this.model = data.model;
+    this.model_target = data.model_target;
+  }
+};
+
+// src/transports/json.js
+var JSONTransport = class extends Transport {
+  constructor() {
+    super();
+    this.onInitial.bind(this);
+    this._update_to_model.bind(this);
+    this.send.bind(this);
+    this.receive.bind(this);
+  }
+  // ##################
+  // # Client methods #
+  // ##################
+  async onInitial(update) {
+    const update_inst = await this._update_to_model(update);
+    return super.onInitial(update_inst);
+  }
+  async _update_to_model(update) {
+    const data = JSON.parse(update);
+    if (Object.keys(data).indexOf("model_type") < 0) {
+      throw new Error(`Update data has no 'model_type'`);
+    }
+    if (Object.keys(data).indexOf("model_target") < 0) {
+      throw new Error(`Update data has no 'model_target'`);
+    }
+    if (!this.model_map.has(data.model_type)) {
+      throw new Error(
+        `Class type (${data.model_type}) not known, did you forget to call 'hosts'?"`
+      );
+    }
+    const Class_type = this.model_map.get(data.model_type);
+    const model_inst = new Class_type(data.model);
+    data.model = model_inst;
+    return new Update(data);
+  }
+  // #################
+  // # Bidirectional #
+  // #################
+  async send(client_id) {
+    return (await super.send(client_id)).json();
+  }
+  async receive(client_id, update) {
+    const update_inst = await this._update_to_model(update);
+    await super.receive(client_id, update_inst);
+  }
+};
+
+// src/transports/model.js
+var Model = class {
+  constructor() {
+    this.receive.bind(this);
+    this.submodels.bind(this);
+  }
+  submodels() {
+    return [];
+  }
+  receive(data) {
+    console.log(`receive: ${data}`);
+  }
+};
+
+// src/core/graph.js
 var _directionToShorthand = (direction) => {
   switch ((direction || "tb").toLowerCase()) {
     case void 0:
@@ -9415,8 +9686,10 @@ var _configureEdgeDefaults = (from, to, options, defaults2) => {
   }
   return resolvedOptions;
 };
-var Graph2 = class {
+var Graph2 = class extends Model {
   constructor(options = {}) {
+    super();
+    console.log(`here: ${this.constructor.name}`);
     this._defaults = _configureDefaults(options);
     this._renderer = render();
     this._graph = new graphlib_exports.Graph({ directed: this._defaults.directed });
@@ -9500,63 +9773,31 @@ var Graph2 = class {
   }
 };
 
-// src/handler.js
-var WebSocketHandler = class {
-  constructor(options = {}) {
-    this._transport = options.transport;
-    this._model = options.model;
-    this._config = options.config;
-    this._protocol = options.protocol || window.location.protocol === "http:" ? "ws:" : "wss:";
-    this._host = options.host || window.location.host;
-    this._path = options.path || "ws";
-    alert("here");
-    this.open.bind(this);
-    this.on_open.bind(this);
-    this.on_receive.bind(this);
-  }
-  async open() {
-    alert("HERE");
-    this._websocket = new WebSocket(
-      `${this._protocol}//${this._host}/${this._path}`
-    );
-    this._websocket.onopen = this.on_open;
-    this._websocket.onmessage = this.on_receive;
-  }
-  async on_open(event) {
-    alert("HERE");
-  }
-  async on_receive(event) {
-    document.body.innerHTML = JSON.parse(event.data);
-  }
-  async close() {
-  }
-  async on_initial() {
-  }
-  async receive() {
-  }
-  async send() {
-  }
-};
-
-// src/transport.js
-var Transport = class {
-  constructor() {
-  }
-  async connectAsync(model, tenant_id, shared, readonly) {
-  }
-  async disconnectAsync(tenant_id) {
-  }
-  async initialAsync(tenant_id) {
-  }
-  async sendAsync(tenant_id) {
-  }
-  async receiveAsync(tenant_id, update) {
-  }
+// src/core/shapes.js
+var house = (parent, bbox, node) => {
+  const w = bbox.width;
+  const h = bbox.height;
+  const points = [
+    { x: 0, y: 0 },
+    { x: w, y: 0 },
+    { x: w, y: -h },
+    { x: w / 2, y: -h * 3 / 2 },
+    { x: 0, y: -h }
+  ];
+  const shapeSvg = parent.insert("polygon", ":first-child").attr("points", points.map((d) => `${d.x},${d.y}`).join(" ")).attr("transform", `translate(${-w / 2},${h * 3 / 4})`);
+  node.intersect = (point2) => intersect_exports.polygon(node, points, point2);
+  return shapeSvg;
 };
 export {
+  Client,
+  Connection,
   Graph2 as Graph,
+  JSONTransport,
+  Model,
   Transport,
-  WebSocketHandler
+  Update,
+  WebSocketClient,
+  house
 };
 /*! Bundled license information:
 
