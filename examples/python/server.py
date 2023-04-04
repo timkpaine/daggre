@@ -4,6 +4,7 @@ from asyncio import get_event_loop
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from random import randint, choice
 from time import sleep
 from threading import Thread
 
@@ -29,30 +30,57 @@ def build_app():
 
     # function to add nodes to graph
     def generate_graph(graph):
-        SCALE = 10
+        scale = 10
         begin = 0
-        while True:
-            for i in range(begin, begin + SCALE):
+        stop = 100
+        interval = 0.1
+
+        # start by generating a bunch node nodes
+        while begin < stop:
+            # add nodes
+            for i in range(begin, begin + scale):
                 if i > 0:
                     if i % 2 == 0:
                         graph.addNode(f"test{i}", color="red")
                     else:
                         graph.addNode(f"test{i}", backgroundColor="lightblue")
-                    graph.addEdge(f"test{i-1}", f"test{i}")
                 else:
                     graph.addNode(f"test{i}", backgroundColor="lightgreen")
+                sleep(interval)
 
-                if i > 2:
-                    for j in range(4):
-                        if i % (j + 2) == 0:
-                            graph.addEdge(
-                                f"test{int(i / (j + 2))}",
-                                f"test{i}",
-                                arrowhead="vee",
-                                line="dash",
-                            )
-            begin += SCALE
-            sleep(5)
+            # add edges
+            for i in range(begin, begin + scale):
+                if begin >= scale:
+                    graph.addEdge(
+                        f"test{i-scale}",
+                        f"test{i}",
+                        arrowhead="vee",
+                        line="dash",
+                    )
+                elif i > 0:
+                    graph.addEdge("test0", f"test{i}")
+                sleep(interval)
+
+            # add same level edges
+            for i in range(begin + 1, begin + scale):
+                graph.addEdge(f"test{i-1}", f"test{i}")
+                sleep(interval)
+
+            # shift to next batch
+            begin += scale
+            sleep(interval)
+
+        # then after just flicker the lights forever
+        while True:
+            index = randint(0, stop)
+            color = choice(
+                ["red", "blue", "green", "yellow", "orange", "black", "cyan", "magenta"]
+            )
+            backgroundColor = choice(
+                ["red", "blue", "green", "yellow", "orange", "black", "cyan", "magenta"]
+            )
+            graph.addNode(f"test{index}", color=color, backgroundColor=backgroundColor)
+            sleep(interval)
 
     t = Thread(target=generate_graph, args=(graph,), daemon=True)
     t.start()

@@ -1,7 +1,7 @@
 import time
 import pytest
 from typing import List, Dict
-from dagred3.transport import Transport, BaseModel
+from dagred3.transports import Transport, BaseModel
 
 
 class MyModel(BaseModel):
