@@ -15,8 +15,8 @@
     "dist/*"
   ],
   "scripts": {
-    "build:esbuild": "esbuild src/index.ts --bundle --format=esm --outdir=dist/",
-    "build:python": "esbuild src/index.ts --bundle --format=esm --outdir=../python/dagred3/static/",
+    "build:esbuild": "esbuild src/index.js --bundle --format=esm --outdir=dist/",
+    "build:python": "esbuild src/index.js --bundle --format=esm --outdir=../python/dagred3/static/",
     "build": "npm-run-all -p build:*",
     "clean": "rimraf dist lib",
     "fix": "yarn lint --fix",
