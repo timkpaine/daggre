@@ -21,7 +21,7 @@
     "clean": "rimraf dist lib",
     "fix": "yarn lint --fix",
     "lint": "eslint --ext js src/ ../examples/*/*.js",
-    "test": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --config .jestrc.js --forceExit",
+    "test": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --config .jestrc.js --forceExit --coverage",
     "watch:server": "http-server -p 3000 -o /examples",
     "watch:esbuild": "yarn build:esbuild --watch",
     "watch": "npm-run-all -p watch:*"
