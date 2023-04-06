@@ -20,7 +20,7 @@ install: prebuild  ## install to site-packages
 # Testing #
 ###########
 test: ## Clean and Make unit tests
-	python -m pytest -v dagred3/tests --junitxml=junit.xml --cov=dagred3 --cov-branch --cov-fail-under=75 --cov-report term-missing
+	python -m pytest -v dagred3/tests --junitxml=junit.xml --cov=dagred3 --cov-branch --cov-fail-under=75 --cov-report term-missing --cov-report xml
 
 tests: test
 
