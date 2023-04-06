@@ -15,13 +15,13 @@
     "dist/*"
   ],
   "scripts": {
-    "build:esbuild": "esbuild src/index.js --bundle --format=esm --outdir=dist/",
-    "build:python": "esbuild src/index.js --bundle --format=esm --outdir=../python/dagred3/static/",
+    "build:esbuild": "esbuild src/index.ts --bundle --format=esm --outdir=dist/",
+    "build:python": "esbuild src/index.ts --bundle --format=esm --outdir=../python/dagred3/static/",
     "build": "npm-run-all -p build:*",
     "clean": "rimraf dist lib",
     "fix": "yarn lint --fix",
     "lint": "eslint --ext js src/ ../examples/*/*.js",
-    "test": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --config .jestrc.js --forceExit",
+    "test": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --config .jestrc.js --forceExit --coverage",
     "watch:server": "http-server -p 3000 -o /examples",
     "watch:esbuild": "yarn build:esbuild --watch",
     "watch": "npm-run-all -p watch:*"
