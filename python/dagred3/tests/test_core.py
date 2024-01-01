@@ -1,5 +1,5 @@
 from dagred3 import Graph, Node
-from udatetime import utcnow
+from datetime import datetime
 from unittest.mock import patch
 
 
@@ -8,7 +8,7 @@ class TestBasic:
         assert repr(a_node) == "Node[a]"
 
     def test_node_serialization(self, a_node):
-        now = utcnow()
+        now = datetime.utcnow()
 
         with patch("dagred3.transports.model.uuid4") as uuid4_mock, patch("dagred3.transports.model.utcnow") as utcnow_mock:
             uuid4_mock.return_value = "blerg"
