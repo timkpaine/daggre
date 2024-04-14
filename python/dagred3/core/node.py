@@ -1,4 +1,5 @@
 from dagred3 import BaseModel, Field, PrivateAttr
+
 from .common import Color, Graph, Shape
 
 

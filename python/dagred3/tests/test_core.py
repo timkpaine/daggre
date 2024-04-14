@@ -1,6 +1,7 @@
-from dagred3 import Graph, Node
 from datetime import datetime
 from unittest.mock import patch
+
+from dagred3 import Graph, Node
 
 
 class TestBasic:

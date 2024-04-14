@@ -28,16 +28,17 @@ tests: test
 # Linting #
 ###########
 lint:  ## Black/flake8 python
-	python -m ruff dagred3 setup.py
-	python -m ruff ../examples/*/*.py
-	python -m black --check dagred3 setup.py
-	python -m black --check ../examples/*/*.py
+	python -m ruff check dagred3 setup.py
+	python -m ruff check ../examples/*/*.py
+	python -m isort dagred3 setup.py --check
+	python -m isort ../examples/*/*.py --check
+
 
 fix:  ## Black python
-	python -m black dagred3/ setup.py
-	python -m black ../examples/*/*.py
-	python -m ruff dagred3 setup.py --fix
-	python -m ruff ../examples/*/*.py --fix
+	python -m ruff format dagred3 setup.py
+	python -m ruff format ../examples/*/*.py
+	python -m isort dagred3 setup.py
+	python -m isort ../examples/*/*.py
 
 format: fix
 

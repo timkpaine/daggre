@@ -1,7 +1,8 @@
 from abc import ABCMeta
-from asyncio import get_event_loop, run_coroutine_threadsafe, AbstractEventLoop
+from asyncio import AbstractEventLoop, get_event_loop, run_coroutine_threadsafe
 from typing import Dict, Optional, Type
 from uuid import uuid4
+
 from .model import BaseModel
 from .update import Update
 

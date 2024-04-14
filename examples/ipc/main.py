@@ -1,19 +1,15 @@
 import sys
+from asyncio import new_event_loop
+from threading import Thread
+from time import sleep
+
 import uvicorn
 import uvloop
-from asyncio import new_event_loop
 from fastapi import FastAPI, WebSocket
-from time import sleep
-from threading import Thread
-
 
 sys.path.append("../../python")  # noqa
-from dagred3 import (  # noqa: E402
-    Graph,
-    JSONTransport,
-    AioHttpWebSocketClient,
-    StarletteWebSocketServer,
-)
+from dagred3 import (AioHttpWebSocketClient, Graph,  # noqa: E402
+                     JSONTransport, StarletteWebSocketServer)
 
 
 def run_server():
@@ -66,9 +62,7 @@ def run_server():
 
     @app.websocket("/ws")
     async def websocket_endpoint(websocket: WebSocket):
-        handler = StarletteWebSocketServer(
-            websocket=websocket, transport=transport, model=graph
-        )
+        handler = StarletteWebSocketServer(websocket=websocket, transport=transport, model=graph)
         await handler.handle()
 
     Thread(target=uvicorn.run, args=(app,), kwargs={"port": 6000}, daemon=True).start()
@@ -99,9 +93,7 @@ def run_client():
 
         def print_graph(graph: Graph):
             while True:
-                print(
-                    f"Client[ Nodes: {len(graph.nodes)} - Edges: {len(graph.edges)} ]"
-                )
+                print(f"Client[ Nodes: {len(graph.nodes)} - Edges: {len(graph.edges)} ]")
                 sleep(5)
 
         t = Thread(target=print_graph, args=(graph,), daemon=True)

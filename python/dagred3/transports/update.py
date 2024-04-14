@@ -1,9 +1,10 @@
 import pydantic
 from datetime import datetime
-from udatetime import utcnow
 from pydantic import BaseModel as PydanticBaseModel, Field, PrivateAttr  # noqa: F401
 from typing import Optional
+from udatetime import utcnow
 from uuid import uuid4
+
 from .model import BaseModel
 from .utils import orjson_dumps, orjson_loads
 
