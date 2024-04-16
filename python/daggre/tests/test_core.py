@@ -1,7 +1,7 @@
 from datetime import datetime
 from unittest.mock import patch
 
-from dagred3 import Graph, Node
+from daggre import Graph, Node
 
 
 class TestBasic:
@@ -11,7 +11,7 @@ class TestBasic:
     def test_node_serialization(self, a_node):
         now = datetime.utcnow()
 
-        with patch("dagred3.transports.model.uuid4") as uuid4_mock, patch("dagred3.transports.model.datetime") as utcnow_mock:
+        with patch("daggre.transports.model.uuid4") as uuid4_mock, patch("daggre.transports.model.datetime") as utcnow_mock:
             uuid4_mock.return_value = "blerg"
             utcnow_mock.utcnow.return_value = now
             print(now.isoformat())

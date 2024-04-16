@@ -1,8 +1,615 @@
+var __create = Object.create;
 var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __commonJS = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
+var __publicField = (obj, key, value) => {
+  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  return value;
+};
+
+// ../node_modules/lodash/isObject.js
+var require_isObject = __commonJS({
+  "../node_modules/lodash/isObject.js"(exports2, module2) {
+    function isObject2(value) {
+      var type2 = typeof value;
+      return value != null && (type2 == "object" || type2 == "function");
+    }
+    module2.exports = isObject2;
+  }
+});
+
+// ../node_modules/lodash/_freeGlobal.js
+var require_freeGlobal = __commonJS({
+  "../node_modules/lodash/_freeGlobal.js"(exports2, module2) {
+    var freeGlobal2 = typeof global == "object" && global && global.Object === Object && global;
+    module2.exports = freeGlobal2;
+  }
+});
+
+// ../node_modules/lodash/_root.js
+var require_root = __commonJS({
+  "../node_modules/lodash/_root.js"(exports2, module2) {
+    var freeGlobal2 = require_freeGlobal();
+    var freeSelf2 = typeof self == "object" && self && self.Object === Object && self;
+    var root3 = freeGlobal2 || freeSelf2 || Function("return this")();
+    module2.exports = root3;
+  }
+});
+
+// ../node_modules/lodash/now.js
+var require_now = __commonJS({
+  "../node_modules/lodash/now.js"(exports2, module2) {
+    var root3 = require_root();
+    var now3 = function() {
+      return root3.Date.now();
+    };
+    module2.exports = now3;
+  }
+});
+
+// ../node_modules/lodash/_trimmedEndIndex.js
+var require_trimmedEndIndex = __commonJS({
+  "../node_modules/lodash/_trimmedEndIndex.js"(exports2, module2) {
+    var reWhitespace2 = /\s/;
+    function trimmedEndIndex2(string) {
+      var index = string.length;
+      while (index-- && reWhitespace2.test(string.charAt(index))) {
+      }
+      return index;
+    }
+    module2.exports = trimmedEndIndex2;
+  }
+});
+
+// ../node_modules/lodash/_baseTrim.js
+var require_baseTrim = __commonJS({
+  "../node_modules/lodash/_baseTrim.js"(exports2, module2) {
+    var trimmedEndIndex2 = require_trimmedEndIndex();
+    var reTrimStart2 = /^\s+/;
+    function baseTrim2(string) {
+      return string ? string.slice(0, trimmedEndIndex2(string) + 1).replace(reTrimStart2, "") : string;
+    }
+    module2.exports = baseTrim2;
+  }
+});
+
+// ../node_modules/lodash/_Symbol.js
+var require_Symbol = __commonJS({
+  "../node_modules/lodash/_Symbol.js"(exports2, module2) {
+    var root3 = require_root();
+    var Symbol3 = root3.Symbol;
+    module2.exports = Symbol3;
+  }
+});
+
+// ../node_modules/lodash/_getRawTag.js
+var require_getRawTag = __commonJS({
+  "../node_modules/lodash/_getRawTag.js"(exports2, module2) {
+    var Symbol3 = require_Symbol();
+    var objectProto20 = Object.prototype;
+    var hasOwnProperty17 = objectProto20.hasOwnProperty;
+    var nativeObjectToString3 = objectProto20.toString;
+    var symToStringTag3 = Symbol3 ? Symbol3.toStringTag : void 0;
+    function getRawTag2(value) {
+      var isOwn = hasOwnProperty17.call(value, symToStringTag3), tag = value[symToStringTag3];
+      try {
+        value[symToStringTag3] = void 0;
+        var unmasked = true;
+      } catch (e) {
+      }
+      var result = nativeObjectToString3.call(value);
+      if (unmasked) {
+        if (isOwn) {
+          value[symToStringTag3] = tag;
+        } else {
+          delete value[symToStringTag3];
+        }
+      }
+      return result;
+    }
+    module2.exports = getRawTag2;
+  }
+});
+
+// ../node_modules/lodash/_objectToString.js
+var require_objectToString = __commonJS({
+  "../node_modules/lodash/_objectToString.js"(exports2, module2) {
+    var objectProto20 = Object.prototype;
+    var nativeObjectToString3 = objectProto20.toString;
+    function objectToString2(value) {
+      return nativeObjectToString3.call(value);
+    }
+    module2.exports = objectToString2;
+  }
+});
+
+// ../node_modules/lodash/_baseGetTag.js
+var require_baseGetTag = __commonJS({
+  "../node_modules/lodash/_baseGetTag.js"(exports2, module2) {
+    var Symbol3 = require_Symbol();
+    var getRawTag2 = require_getRawTag();
+    var objectToString2 = require_objectToString();
+    var nullTag2 = "[object Null]";
+    var undefinedTag2 = "[object Undefined]";
+    var symToStringTag3 = Symbol3 ? Symbol3.toStringTag : void 0;
+    function baseGetTag2(value) {
+      if (value == null) {
+        return value === void 0 ? undefinedTag2 : nullTag2;
+      }
+      return symToStringTag3 && symToStringTag3 in Object(value) ? getRawTag2(value) : objectToString2(value);
+    }
+    module2.exports = baseGetTag2;
+  }
+});
+
+// ../node_modules/lodash/isObjectLike.js
+var require_isObjectLike = __commonJS({
+  "../node_modules/lodash/isObjectLike.js"(exports2, module2) {
+    function isObjectLike2(value) {
+      return value != null && typeof value == "object";
+    }
+    module2.exports = isObjectLike2;
+  }
+});
+
+// ../node_modules/lodash/isSymbol.js
+var require_isSymbol = __commonJS({
+  "../node_modules/lodash/isSymbol.js"(exports2, module2) {
+    var baseGetTag2 = require_baseGetTag();
+    var isObjectLike2 = require_isObjectLike();
+    var symbolTag5 = "[object Symbol]";
+    function isSymbol2(value) {
+      return typeof value == "symbol" || isObjectLike2(value) && baseGetTag2(value) == symbolTag5;
+    }
+    module2.exports = isSymbol2;
+  }
+});
+
+// ../node_modules/lodash/toNumber.js
+var require_toNumber = __commonJS({
+  "../node_modules/lodash/toNumber.js"(exports2, module2) {
+    var baseTrim2 = require_baseTrim();
+    var isObject2 = require_isObject();
+    var isSymbol2 = require_isSymbol();
+    var NAN2 = 0 / 0;
+    var reIsBadHex2 = /^[-+]0x[0-9a-f]+$/i;
+    var reIsBinary2 = /^0b[01]+$/i;
+    var reIsOctal2 = /^0o[0-7]+$/i;
+    var freeParseInt2 = parseInt;
+    function toNumber2(value) {
+      if (typeof value == "number") {
+        return value;
+      }
+      if (isSymbol2(value)) {
+        return NAN2;
+      }
+      if (isObject2(value)) {
+        var other = typeof value.valueOf == "function" ? value.valueOf() : value;
+        value = isObject2(other) ? other + "" : other;
+      }
+      if (typeof value != "string") {
+        return value === 0 ? value : +value;
+      }
+      value = baseTrim2(value);
+      var isBinary = reIsBinary2.test(value);
+      return isBinary || reIsOctal2.test(value) ? freeParseInt2(value.slice(2), isBinary ? 2 : 8) : reIsBadHex2.test(value) ? NAN2 : +value;
+    }
+    module2.exports = toNumber2;
+  }
+});
+
+// ../node_modules/lodash/debounce.js
+var require_debounce = __commonJS({
+  "../node_modules/lodash/debounce.js"(exports2, module2) {
+    var isObject2 = require_isObject();
+    var now3 = require_now();
+    var toNumber2 = require_toNumber();
+    var FUNC_ERROR_TEXT2 = "Expected a function";
+    var nativeMax4 = Math.max;
+    var nativeMin = Math.min;
+    function debounce(func, wait, options) {
+      var lastArgs, lastThis, maxWait, result, timerId, lastCallTime, lastInvokeTime = 0, leading = false, maxing = false, trailing = true;
+      if (typeof func != "function") {
+        throw new TypeError(FUNC_ERROR_TEXT2);
+      }
+      wait = toNumber2(wait) || 0;
+      if (isObject2(options)) {
+        leading = !!options.leading;
+        maxing = "maxWait" in options;
+        maxWait = maxing ? nativeMax4(toNumber2(options.maxWait) || 0, wait) : maxWait;
+        trailing = "trailing" in options ? !!options.trailing : trailing;
+      }
+      function invokeFunc(time2) {
+        var args = lastArgs, thisArg = lastThis;
+        lastArgs = lastThis = void 0;
+        lastInvokeTime = time2;
+        result = func.apply(thisArg, args);
+        return result;
+      }
+      function leadingEdge(time2) {
+        lastInvokeTime = time2;
+        timerId = setTimeout(timerExpired, wait);
+        return leading ? invokeFunc(time2) : result;
+      }
+      function remainingWait(time2) {
+        var timeSinceLastCall = time2 - lastCallTime, timeSinceLastInvoke = time2 - lastInvokeTime, timeWaiting = wait - timeSinceLastCall;
+        return maxing ? nativeMin(timeWaiting, maxWait - timeSinceLastInvoke) : timeWaiting;
+      }
+      function shouldInvoke(time2) {
+        var timeSinceLastCall = time2 - lastCallTime, timeSinceLastInvoke = time2 - lastInvokeTime;
+        return lastCallTime === void 0 || timeSinceLastCall >= wait || timeSinceLastCall < 0 || maxing && timeSinceLastInvoke >= maxWait;
+      }
+      function timerExpired() {
+        var time2 = now3();
+        if (shouldInvoke(time2)) {
+          return trailingEdge(time2);
+        }
+        timerId = setTimeout(timerExpired, remainingWait(time2));
+      }
+      function trailingEdge(time2) {
+        timerId = void 0;
+        if (trailing && lastArgs) {
+          return invokeFunc(time2);
+        }
+        lastArgs = lastThis = void 0;
+        return result;
+      }
+      function cancel() {
+        if (timerId !== void 0) {
+          clearTimeout(timerId);
+        }
+        lastInvokeTime = 0;
+        lastArgs = lastCallTime = lastThis = timerId = void 0;
+      }
+      function flush() {
+        return timerId === void 0 ? result : trailingEdge(now3());
+      }
+      function debounced() {
+        var time2 = now3(), isInvoking = shouldInvoke(time2);
+        lastArgs = arguments;
+        lastThis = this;
+        lastCallTime = time2;
+        if (isInvoking) {
+          if (timerId === void 0) {
+            return leadingEdge(lastCallTime);
+          }
+          if (maxing) {
+            clearTimeout(timerId);
+            timerId = setTimeout(timerExpired, wait);
+            return invokeFunc(lastCallTime);
+          }
+        }
+        if (timerId === void 0) {
+          timerId = setTimeout(timerExpired, wait);
+        }
+        return result;
+      }
+      debounced.cancel = cancel;
+      debounced.flush = flush;
+      return debounced;
+    }
+    module2.exports = debounce;
+  }
+});
+
+// ../node_modules/lodash/throttle.js
+var require_throttle = __commonJS({
+  "../node_modules/lodash/throttle.js"(exports2, module2) {
+    var debounce = require_debounce();
+    var isObject2 = require_isObject();
+    var FUNC_ERROR_TEXT2 = "Expected a function";
+    function throttle2(func, wait, options) {
+      var leading = true, trailing = true;
+      if (typeof func != "function") {
+        throw new TypeError(FUNC_ERROR_TEXT2);
+      }
+      if (isObject2(options)) {
+        leading = "leading" in options ? !!options.leading : leading;
+        trailing = "trailing" in options ? !!options.trailing : trailing;
+      }
+      return debounce(func, wait, {
+        "leading": leading,
+        "maxWait": wait,
+        "trailing": trailing
+      });
+    }
+    module2.exports = throttle2;
+  }
+});
+
+// src/transports/connection.js
+var Connection = class {
+  constructor() {
+    if (this.constructor === Connection) {
+      throw new Error("Abstract classes can't be instantiated.");
+    }
+    this.receiver.bind(this);
+    this.sender.bind(this);
+  }
+  async receiver() {
+    while (true) {
+      const update = await this.receive();
+      await this._transport.receive(this._client_id, update);
+    }
+  }
+  async sender() {
+    while (true) {
+      const update = await this._transport.send(this._client_id);
+      await this.send(update);
+    }
+  }
+  // eslint-disable-next-line no-unused-vars
+  async connect(client_id = "") {
+    throw new Error("Method 'connect' must be implemented.");
+  }
+  async disconnect() {
+    throw new Error("Method 'disconnect' must be implemented.");
+  }
+  async receive() {
+    throw new Error("Method 'receive' must be implemented.");
+  }
+  // eslint-disable-next-line no-unused-vars
+  async send(update) {
+    throw new Error("Method 'send' must be implemented.");
+  }
+};
+
+// src/transports/client.js
+var Client = class extends Connection {
+  constructor(options = {}) {
+    super();
+    this._transport = options.transport;
+    this._client_id = options._client_id || "";
+    this.open.bind(this);
+    this.close.bind(this);
+    this.initial.bind(this);
+    this.handle.bind(this);
+  }
+  async open() {
+    await this.connect(this._client_id);
+    await this._transport.connect();
+    const initial = await this.receive();
+    return this._transport.onInitial(initial);
+  }
+  async close() {
+    await this._transport.disconnect();
+    await this.disconnect();
+  }
+  async initial() {
+    return this.open();
+  }
+  async handle() {
+    await this.receiver();
+    await this.close();
+  }
+};
+
+// src/transports/handler.js
+var WebSocketClient = class extends Client {
+  constructor(options = {}) {
+    super();
+    this._transport = options.transport;
+    this._model = options.model;
+    this._config = options.config;
+    this._protocol = options.protocol || window.location.protocol === "http:" ? "ws:" : "wss:";
+    this._host = options.host || window.location.host;
+    this._path = options.path || "ws";
+    this._connected = false;
+    this._data = new Array();
+    this._datapromise = null;
+    this._datacallback = null;
+    this.connect.bind(this);
+    this.disconnect.bind(this);
+    this.receive.bind(this);
+    this.send.bind(this);
+  }
+  async connect() {
+    this._websocket = new WebSocket(
+      `${this._protocol}//${this._host}/${this._path}`
+    );
+    this._connected = true;
+    this._websocket.onopen = this._on_open.bind(this);
+    this._websocket.onclose = this._on_close.bind(this);
+    this._websocket.onmessage = this._on_receive.bind(this);
+  }
+  async disconnect() {
+    this._websocket.close();
+  }
+  async _on_open() {
+    this._connected = true;
+  }
+  async _on_close(event) {
+    this._connected = false;
+    if (this._datacallback) {
+      this._datacallback.reject(event);
+      this._datacallback = null;
+    }
+  }
+  async _on_receive(event) {
+    this._data.push(event.data);
+    if (this._datacallback) {
+      this._datacallback.resolve(this._data.shift());
+      this._datacallback = null;
+    }
+  }
+  async receive() {
+    if (this._data.length !== 0) {
+      return Promise.resolve(this._data.shift());
+    }
+    if (!this._connected) {
+      return Promise.reject(new Error("Disconnected"));
+    }
+    if (this._datacallback) {
+      return this._datapromise;
+    }
+    this._datapromise = new Promise((resolve, reject) => {
+      this._datacallback = { resolve, reject };
+    });
+    return this._datapromise;
+  }
+  async send(update) {
+    this._websocket.send(update);
+  }
+};
+
+// src/transports/transport.js
+var Transport = class {
+  constructor() {
+    this.models = /* @__PURE__ */ new Map();
+    this.server_models = /* @__PURE__ */ new Map();
+    this.model_map = /* @__PURE__ */ new Map();
+    this.hosts.bind(this);
+  }
+  hosts(model_type) {
+    if (!this.model_map.has(model_type.name)) {
+      console.info(`Registering type: ${model_type.name}`);
+      this.model_map.set(model_type.name, model_type);
+      model_type.submodels().forEach((submodel_type) => {
+        this.hosts(submodel_type);
+      });
+    }
+  }
+  async connect() {
+  }
+  async disconnect() {
+    this.server_models = /* @__PURE__ */ new Map();
+  }
+  async onInitial(update) {
+    const model = update.model;
+    this.server_models.set(model.id, model);
+    this.models.set("", model);
+    return model;
+  }
+  // #################
+  // # Bidirectional #
+  // #################
+  async send(client_id) {
+    const model = this.models.get(client_id);
+    return await model.get();
+  }
+  async receive(client_id, update) {
+    const model = this.models.get(client_id);
+    await model.receive(update);
+  }
+};
+
+// src/transports/update.js
+var Update = class {
+  constructor(data = {}) {
+    this.model = data.model;
+    this.model_target = data.model_target;
+  }
+};
+
+// src/transports/json.js
+var JSONTransport = class extends Transport {
+  constructor() {
+    super();
+    this.onInitial.bind(this);
+    this._update_to_model.bind(this);
+    this.send.bind(this);
+    this.receive.bind(this);
+  }
+  // ##################
+  // # Client methods #
+  // ##################
+  async onInitial(update) {
+    const update_inst = await this._update_to_model(update);
+    return super.onInitial(update_inst);
+  }
+  async _update_to_model(update) {
+    const data = JSON.parse(update);
+    if (Object.keys(data).indexOf("model_type") < 0) {
+      throw new Error(`Update data has no 'model_type'`);
+    }
+    if (Object.keys(data).indexOf("model_target") < 0) {
+      throw new Error(`Update data has no 'model_target'`);
+    }
+    if (!this.model_map.has(data.model_type)) {
+      throw new Error(
+        `Class type (${data.model_type}) not known, did you forget to call 'hosts'?"`
+      );
+    }
+    const Class_type = this.model_map.get(data.model_type);
+    const model_inst = new Class_type(data.model);
+    data.model = model_inst;
+    return new Update(data);
+  }
+  // #################
+  // # Bidirectional #
+  // #################
+  async send(client_id) {
+    return (await super.send(client_id)).json();
+  }
+  async receive(client_id, update) {
+    const update_inst = await this._update_to_model(update);
+    await super.receive(client_id, update_inst);
+  }
+};
+
+// src/transports/model.js
+var Model = class {
+  constructor() {
+    this.receive.bind(this);
+  }
+  static submodels() {
+    return [];
+  }
+  // eslint-disable-next-line class-methods-use-this, no-unused-vars
+  receive(_data) {
+  }
+};
+
+// src/core/node.js
+var Node = class extends Model {
+  constructor(data) {
+    super();
+    Object.keys(data).forEach((key) => {
+      this[key] = data[key];
+    });
+  }
+};
+__publicField(Node, "name", "Node");
+
+// src/core/edge.js
+var Edge = class extends Model {
+  constructor(data) {
+    super();
+    Object.keys(data).forEach((key) => {
+      this[key] = data[key];
+    });
+  }
+  static submodels() {
+    return [Node];
+  }
+};
+__publicField(Edge, "name", "Edge");
 
 // ../node_modules/d3-dispatch/src/dispatch.js
 var noop = { value: () => {
@@ -9395,240 +10002,36 @@ __export(intersect_exports, {
   rect: () => intersect_rect_exports
 });
 
-// src/transports/connection.js
-var Connection = class {
-  constructor() {
-    if (this.constructor === Connection) {
-      throw new Error("Abstract classes can't be instantiated.");
-    }
-    this.receiver.bind(this);
-    this.sender.bind(this);
-  }
-  async receiver() {
-    while (true) {
-      const update = await this.receive();
-      await this._transport.receive(this._client_id, update);
-    }
-  }
-  async sender() {
-    while (true) {
-      const update = await this._transport.send(this._client_id);
-      await this.send(update);
-    }
-  }
-  // eslint-disable-next-line no-unused-vars
-  async connect(client_id = "") {
-    throw new Error("Method 'connect' must be implemented.");
-  }
-  async disconnect() {
-    throw new Error("Method 'disconnect' must be implemented.");
-  }
-  async receive() {
-    throw new Error("Method 'receive' must be implemented.");
-  }
-  // eslint-disable-next-line no-unused-vars
-  async send(update) {
-    throw new Error("Method 'send' must be implemented.");
-  }
-};
+// src/core/graph.js
+var import_throttle = __toESM(require_throttle(), 1);
 
-// src/transports/client.js
-var Client = class extends Connection {
-  constructor(options = {}) {
-    super();
-    this._transport = options.transport;
-    this._client_id = options._client_id || "";
-    this.open.bind(this);
-    this.close.bind(this);
-    this.initial.bind(this);
-    this.handle.bind(this);
-  }
-  async open() {
-    await this.connect(this._client_id);
-    await this._transport.connect();
-    const initial = await this.receive();
-    return this._transport.onInitial(initial);
-  }
-  async close() {
-    await this._transport.disconnect();
-    await this.disconnect();
-  }
-  async initial() {
-    return this.open();
-  }
-  async handle() {
-    await this.receiver();
-    await this.close();
-  }
+// src/core/shapes.js
+var house = (parent, bbox, node) => {
+  const w = bbox.width;
+  const h = bbox.height;
+  const points = [
+    { x: 0, y: 0 },
+    { x: w, y: 0 },
+    { x: w, y: -h },
+    { x: w / 2, y: -h * 3 / 2 },
+    { x: 0, y: -h }
+  ];
+  const shapeSvg = parent.insert("polygon", ":first-child").attr("points", points.map((d) => `${d.x},${d.y}`).join(" ")).attr("transform", `translate(${-w / 2},${h * 3 / 4})`);
+  node.intersect = (point2) => intersect_exports.polygon.intersectPolygon(node, points, point2);
+  return shapeSvg;
 };
-
-// src/transports/handler.js
-var WebSocketClient = class extends Client {
-  constructor(options = {}) {
-    super();
-    this._transport = options.transport;
-    this._model = options.model;
-    this._config = options.config;
-    this._protocol = options.protocol || window.location.protocol === "http:" ? "ws:" : "wss:";
-    this._host = options.host || window.location.host;
-    this._path = options.path || "ws";
-    this._connected = false;
-    this._data = new Array();
-    this._datapromise = null;
-    this._datacallback = null;
-    this.connect.bind(this);
-    this.disconnect.bind(this);
-    this.receive.bind(this);
-    this.send.bind(this);
-  }
-  async connect() {
-    this._websocket = new WebSocket(
-      `${this._protocol}//${this._host}/${this._path}`
-    );
-    this._connected = true;
-    this._websocket.onopen = this._on_open.bind(this);
-    this._websocket.onclose = this._on_close.bind(this);
-    this._websocket.onmessage = this._on_receive.bind(this);
-  }
-  async disconnect() {
-    this._websocket.close();
-  }
-  async _on_open() {
-    this._connected = true;
-  }
-  async _on_close(event) {
-    this._connected = false;
-    if (this._datacallback) {
-      this._datacallback.reject(event);
-      this._datacallback = null;
-    }
-  }
-  async _on_receive(event) {
-    this._data.push(event.data);
-    if (this._datacallback) {
-      this._datacallback.resolve(this._data.shift());
-    }
-  }
-  async receive() {
-    if (this._data.length !== 0) {
-      return Promise.resolve(this._data.shift());
-    }
-    if (!this._connected) {
-      return Promise.reject(new Error("Disconnected"));
-    }
-    if (this._datacallback) {
-      return this._datapromise;
-    }
-    this._datapromise = new Promise((resolve, reject) => {
-      this._datacallback = { resolve, reject };
-    });
-    return this._datapromise;
-  }
-  async send(update) {
-    this._websocket.send(update);
-  }
+var hollowpoint = (parent, id2, edge, type2) => {
+  const marker = parent.append("marker").attr("id", id2).attr("viewBox", "0 0 10 10").attr("refX", 9).attr("refY", 5).attr("markerUnits", "strokeWidth").attr("markerWidget", 8).attr("markerHeight", 6).attr("orient", "auto");
+  const path2 = marker.append("path").attr("d", "M 0 0 L 10 5 L 0 10 z").style("stroke-width", 1).style("stroke-dasharray", "1,0").style("fill", "#fff").style("stroke", "#333");
+  path2.attr("style", edge[`${type2}Style`]);
+  return marker;
 };
-
-// src/transports/transport.js
-var Transport = class {
-  constructor() {
-    this.models = /* @__PURE__ */ new Map();
-    this.server_models = /* @__PURE__ */ new Map();
-    this.model_map = /* @__PURE__ */ new Map();
-    this.hosts.bind(this);
-  }
-  hosts(model_name, model_type) {
-    this.model_map.set(model_name, model_type);
-  }
-  async connect() {
-  }
-  async disconnect() {
-    this.server_models = /* @__PURE__ */ new Map();
-  }
-  async onInitial(update) {
-    const model = update.model;
-    this.server_models.set(model.id, model);
-    this.models.set("", model);
-    return model;
-  }
-  // #################
-  // # Bidirectional #
-  // #################
-  async send(client_id) {
-    const model = this.models.get(client_id);
-    return await model.get();
-  }
-  async receive(client_id, update) {
-    const model = this.models.get(client_id);
-    await model.receive(update);
-  }
-};
-
-// src/transports/update.js
-var Update = class {
-  constructor(data = {}) {
-    this.model = data.model;
-    this.model_target = data.model_target;
-  }
-};
-
-// src/transports/json.js
-var JSONTransport = class extends Transport {
-  constructor() {
-    super();
-    this.onInitial.bind(this);
-    this._update_to_model.bind(this);
-    this.send.bind(this);
-    this.receive.bind(this);
-  }
-  // ##################
-  // # Client methods #
-  // ##################
-  async onInitial(update) {
-    const update_inst = await this._update_to_model(update);
-    return super.onInitial(update_inst);
-  }
-  async _update_to_model(update) {
-    const data = JSON.parse(update);
-    if (Object.keys(data).indexOf("model_type") < 0) {
-      throw new Error(`Update data has no 'model_type'`);
-    }
-    if (Object.keys(data).indexOf("model_target") < 0) {
-      throw new Error(`Update data has no 'model_target'`);
-    }
-    if (!this.model_map.has(data.model_type)) {
-      throw new Error(
-        `Class type (${data.model_type}) not known, did you forget to call 'hosts'?"`
-      );
-    }
-    const Class_type = this.model_map.get(data.model_type);
-    const model_inst = new Class_type(data.model);
-    data.model = model_inst;
-    return new Update(data);
-  }
-  // #################
-  // # Bidirectional #
-  // #################
-  async send(client_id) {
-    return (await super.send(client_id)).json();
-  }
-  async receive(client_id, update) {
-    const update_inst = await this._update_to_model(update);
-    await super.receive(client_id, update_inst);
-  }
-};
-
-// src/transports/model.js
-var Model = class {
-  constructor() {
-    this.receive.bind(this);
-    this.submodels.bind(this);
-  }
-  submodels() {
-    return [];
-  }
-  receive(data) {
-    console.log(`receive: ${data}`);
+var Shapes = {
+  Node: {
+    house
+  },
+  Arrow: {
+    hollowpoint
   }
 };
 
@@ -9687,12 +10090,38 @@ var _configureEdgeDefaults = (from, to, options, defaults2) => {
   return resolvedOptions;
 };
 var Graph2 = class extends Model {
+  // flags
+  _rendered;
+  _ready;
+  // map of node name -> node
+  _nodes;
+  // list of edges
+  _edges;
+  // render point
+  _renderpoint;
+  // throttling renderer
+  _throttled_render;
   constructor(options = {}) {
     super();
-    console.log(`here: ${this.constructor.name}`);
+    this.addNode.bind(this);
+    this.addNodeInst.bind(this);
+    this.addEdge.bind(this);
+    this.addEdgeInst.bind(this);
+    this.render.bind(this);
+    this._calculateInitialScale.bind(this);
+    this._throttled_render = (0, import_throttle.default)(() => this.render(), 200);
     this._defaults = _configureDefaults(options);
     this._renderer = render();
+    Object.keys(Shapes.Node).forEach((name) => {
+      this._renderer.shapes()[name] = Shapes.Node[name];
+    });
+    Object.keys(Shapes.Arrow).forEach((name) => {
+      this._renderer.arrows()[name] = Shapes.Arrow[name];
+    });
+    this._renderpoint = null;
     this._graph = new graphlib_exports.Graph({ directed: this._defaults.directed });
+    this._nodes = /* @__PURE__ */ new Map();
+    this._edges = [];
     this._graph.setGraph({
       nodesep: this._defaults.nodesep,
       ranksep: this._defaults.ranksep,
@@ -9702,19 +10131,33 @@ var Graph2 = class extends Model {
     });
     this._graph.setDefaultEdgeLabel(() => {
     });
+    this._ready = false;
     this._rendered = false;
     this._graph_svg_inst = null;
     this._graph_g_inst = null;
-    this.addNode.bind(this);
-    this.addEdge.bind(this);
-    this.render.bind(this);
-    this._calculateInitialScale.bind(this);
+    Object.keys(options.nodes || {}).forEach((node_id) => {
+      this.addNodeInst(new Node(options.nodes[node_id]));
+    });
+    options.edges?.forEach((edge) => {
+      this.addEdgeInst(new Edge(edge));
+    });
+    this._ready = true;
+  }
+  static submodels() {
+    return [Edge, Node];
   }
   addNode(name, options = {}) {
+    this._nodes.set(name, name);
     this._graph.setNode(
       name,
       _configureNodeDefaults(name, options, this._defaults.node)
     );
+    if (this._ready) {
+      this._throttled_render();
+    }
+  }
+  addNodeInst(node) {
+    this.addNode(node.name, node);
   }
   addEdge(from, to, options = {}) {
     this._graph.setEdge(
@@ -9722,11 +10165,40 @@ var Graph2 = class extends Model {
       to,
       _configureEdgeDefaults(from, to, options, this._defaults.edge)
     );
+    if (this._ready) {
+      this._throttled_render();
+    }
+  }
+  addEdgeInst(edge) {
+    const fromNode = new Node(edge.from_);
+    const toNode = new Node(edge.to_);
+    this.addNodeInst(fromNode);
+    this.addNodeInst(toNode);
+    this.addEdge(fromNode.name, toNode.name, edge);
+  }
+  receive(obj) {
+    if (obj.model instanceof Node) {
+      this.addNodeInst(obj.model);
+    }
+    if (obj.model instanceof Edge) {
+      this.addEdgeInst(obj.model);
+    }
   }
   render(onto) {
+    if (!this._ready) {
+      return;
+    }
+    if (this._nodes.size === 0) {
+      this._renderpoint = onto;
+      return;
+    }
+    const renderpoint = onto || this._renderpoint;
+    if (!renderpoint) {
+      return;
+    }
     if (!this._rendered) {
-      onto.classList.add("dagred3-container");
-      this._graph_svg_inst = select_default2(onto).append("svg");
+      renderpoint.classList.add("daggre-container");
+      this._graph_svg_inst = select_default2(renderpoint).append("svg");
       this._graph_g_inst = this._graph_svg_inst.append("g");
       this._zoom = zoom_default2().on("zoom", (event) => {
         this._graph_g_inst.attr("transform", event.transform);
@@ -9734,10 +10206,10 @@ var Graph2 = class extends Model {
       this._graph_svg_inst.call(this._zoom);
     }
     this._renderer(this._graph_g_inst, this._graph);
-    if (!this._rendered) {
+    if (!this._rendered && renderpoint) {
       this._calculateInitialScale();
-      const width2 = onto.offsetWidth;
-      const height = onto.offsetHeight;
+      const width2 = renderpoint.offsetWidth;
+      const height = renderpoint.offsetHeight;
       this._graph_svg_inst.call(
         this._zoom.transform,
         identity2.translate(
@@ -9745,8 +10217,8 @@ var Graph2 = class extends Model {
           (height - this._graph.graph().height * this._defaults.initialScale) / 2
         ).scale(this._defaults.initialScale)
       );
+      this._rendered = true;
     }
-    this._rendered = true;
   }
   _calculateInitialScale() {
     if (this._defaults.initialScale === void 0) {
@@ -9772,32 +10244,19 @@ var Graph2 = class extends Model {
     }
   }
 };
-
-// src/core/shapes.js
-var house = (parent, bbox, node) => {
-  const w = bbox.width;
-  const h = bbox.height;
-  const points = [
-    { x: 0, y: 0 },
-    { x: w, y: 0 },
-    { x: w, y: -h },
-    { x: w / 2, y: -h * 3 / 2 },
-    { x: 0, y: -h }
-  ];
-  const shapeSvg = parent.insert("polygon", ":first-child").attr("points", points.map((d) => `${d.x},${d.y}`).join(" ")).attr("transform", `translate(${-w / 2},${h * 3 / 4})`);
-  node.intersect = (point2) => intersect_exports.polygon(node, points, point2);
-  return shapeSvg;
-};
+__publicField(Graph2, "name", "Graph");
 export {
   Client,
   Connection,
+  Edge,
   Graph2 as Graph,
   JSONTransport,
   Model,
+  Node,
+  Shapes,
   Transport,
   Update,
-  WebSocketClient,
-  house
+  WebSocketClient
 };
 /*! Bundled license information:
 

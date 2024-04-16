@@ -256,7 +256,7 @@ export class Graph extends Model {
     // only run on first rendering
     if (!this._rendered) {
       // add class to `renderpoint`
-      renderpoint.classList.add("dagred3-container");
+      renderpoint.classList.add("daggre-container");
 
       // create svg and g elements
       this._graph_svg_inst = d3.select(renderpoint).append("svg");

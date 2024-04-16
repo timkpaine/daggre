@@ -1,42 +1,42 @@
-div.dagred3-container {
+div.daggre-container {
     /* min-height: 600px; */
     /* min-width: 800px; */
     /* resize: both; */
   }
-  
-  div.dagred3-container > svg {
+
+  div.daggre-container > svg {
     height: 100%;
     width: 100%;
   }
-  
-  .dagred3-container .node rect,
-  .dagred3-container .node circle,
-  .dagred3-container .node ellipse,
-  .dagred3-container .node polygon {
+
+  .daggre-container .node rect,
+  .daggre-container .node circle,
+  .daggre-container .node ellipse,
+  .daggre-container .node polygon {
     stroke: #555;
     fill: #fff;
   }
-  
-  .dagred3-container .edgePath path {
+
+  .daggre-container .edgePath path {
     stroke: #555;
     fill: transparent;
     stroke-width: 1.5px;
   }
-  
-  .dagred3-container .edgeLabel foreignObject {
+
+  .daggre-container .edgeLabel foreignObject {
     overflow: visible;
   }
-  
-  .dagred3-container .edgeLabel foreignObject u {
+
+  .daggre-container .edgeLabel foreignObject u {
     text-decoration: none;
   }
-  
-  .dagred3-container .node text {
+
+  .daggre-container .node text {
     pointer-events: none;
   }
-  
-  
-  div.dagred3-tooltip {
+
+
+  div.daggre-tooltip {
     background-color: rgba(255, 255, 255, .8);
     border: 1px solid #555;
     padding: 15px;
