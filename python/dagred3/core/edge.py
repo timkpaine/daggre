@@ -1,7 +1,6 @@
 from typing import Optional
 
-from dagred3 import BaseModel, PrivateAttr
-
+from ..transports import BaseModel, PrivateAttr
 from .common import Arrowhead, Graph, LabelPosition, Line
 from .node import Node
 
