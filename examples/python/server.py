@@ -10,8 +10,8 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 sys.path.append("../../python")  # noqa
-from dagred3 import JSONTransport  # noqa: E402
-from dagred3 import Graph, StarletteWebSocketServer
+from daggre import JSONTransport  # noqa: E402
+from daggre import Graph, StarletteWebSocketServer
 
 
 def build_app():

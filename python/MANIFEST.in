@@ -3,8 +3,8 @@ include README.md
 
 include pyproject.toml
 
-graft dagred3
-graft dagred3/static
+graft daggre
+graft daggre/static
 
 # get rid of test and lint artifacts
 prune .pytest_cache

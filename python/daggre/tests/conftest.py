@@ -1,6 +1,6 @@
 from pytest import fixture
 
-from dagred3 import Edge, Graph, Node
+from daggre import Edge, Graph, Node
 
 
 @fixture

@@ -2,7 +2,7 @@ import pytest
 import time
 from typing import Dict, List
 
-from dagred3.transports import BaseModel, Transport
+from daggre.transports import BaseModel, Transport
 
 
 class MyModel(BaseModel): ...

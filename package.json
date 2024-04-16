@@ -1,7 +1,7 @@
 {
   "private": true,
-  "name": "dagre-d3-lite",
-  "repository": "git@github.com:timkpaine/dagre-d3-lite.git",
+  "name": "daggre",
+  "repository": "git@github.com:timkpaine/daggre.git",
   "author": "Tim Paine <t.paine154@gmail.com>",
   "license": "Apache-2.0",
   "type": "module",

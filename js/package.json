@@ -1,9 +1,9 @@
 {
-  "name": "dagre-d3-lite",
+  "name": "daggre",
   "version": "0.1.0",
   "description": "Convenience layer for dagre-d3",
   "main": "dist/iexjs.js",
-  "repository": "git@github.com:timkpaine/dagre-d3-lite.git",
+  "repository": "git@github.com:timkpaine/daggre.git",
   "author": "Tim Paine <t.paine154@gmail.com>",
   "license": "Apache-2.0",
   "type": "module",
@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "build:esbuild": "esbuild src/index.js --bundle --format=esm --outdir=dist/",
-    "build:python": "esbuild src/index.js --bundle --format=esm --outdir=../python/dagred3/static/",
+    "build:python": "esbuild src/index.js --bundle --format=esm --outdir=../python/daggre/static/",
     "build": "npm-run-all -p build:*",
     "clean": "rimraf dist lib",
     "fix": "yarn lint --fix",
