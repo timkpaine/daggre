@@ -8,8 +8,9 @@ import uvloop
 from fastapi import FastAPI, WebSocket
 
 sys.path.append("../../python")  # noqa
-from dagred3 import (AioHttpWebSocketClient, Graph,  # noqa: E402
-                     JSONTransport, StarletteWebSocketServer)
+from dagred3 import Graph  # noqa: E402
+from dagred3 import (AioHttpWebSocketClient, JSONTransport,
+                     StarletteWebSocketServer)
 
 
 def run_server():

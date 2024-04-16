@@ -1,5 +1,4 @@
-from dagred3 import BaseModel, Field, PrivateAttr
-
+from ..transports import BaseModel, Field, PrivateAttr
 from .common import Color, Graph, Shape
 
 
@@ -13,6 +12,9 @@ class Node(BaseModel):
 
     def _setGraph(self, graph: Graph):  # type: ignore[valid-type]
         self._graph = graph
+
+    def __hash__(self):
+        return hash(self.id)
 
     def __eq__(self, other: object) -> bool:
         # for identity

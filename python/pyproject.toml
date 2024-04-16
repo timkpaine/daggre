@@ -5,7 +5,7 @@ requires = [
 build-backend = "hatchling.build"
 
 [project]
-name = "dagred3"
+name = "daggre"
 description = "A convenience layer on top of `dagre-d3` (`dagre-d3-es`), for use in `dagre-d3-lite`"
 version = "0.1.0"
 readme = "README.md"
@@ -34,9 +34,8 @@ dependencies = [
     "aiohttp",
     "aiostream",
     "orjson",
-    "pydantic<2",
+    "pydantic",
     "starlette",
-    "udatetime",
     "uvicorn",
     "websockets",
 ]
@@ -57,13 +56,8 @@ test = [
 ]
 
 [project.urls]
-repository = "https://github.com/timkpaine/dagre-d3-lite"
-homepage = "https://github.com/timkpaine/dagre-d3-lite"
-
-[tool.black]
-color = true
-line-length = 150
-target-version = ['py310']
+Repository = "https://github.com/timkpaine/dagre-d3-lite"
+Homepage = "https://github.com/timkpaine/dagre-d3-lite"
 
 [tool.check-manifest]
 ignore = [
@@ -76,8 +70,34 @@ artifacts = [
     "dagred3/static",
 ]
 
+[tool.hatch.build.sources]
+src = "/"
+
 [tool.hatch.build.targets.sdist]
-exclude = []
+include = [
+    "/dagred3",
+    "/pyproject.toml",
+    "/setup.py",
+    "LICENSE",
+    "README.md",
+]
+exclude = [
+    "/.mypy_cache",
+    "/.ruff_cache",
+    "/dist",
+    "/Makefile",
+]
+
+[tool.hatch.build.targets.wheel]
+include = [
+    "/dagred3",
+]
+exclude = [
+    "/.mypy_cache",
+    "/.ruff_cache",
+    "/pyproject.toml",
+    "/dist",
+]
 
 [tool.hatch.build.hooks.jupyter-builder]
 build-function = "hatch_jupyter_builder.npm_builder"

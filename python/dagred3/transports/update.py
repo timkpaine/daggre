@@ -1,19 +1,16 @@
-import pydantic
 from datetime import datetime
-from pydantic import BaseModel as PydanticBaseModel, Field, PrivateAttr  # noqa: F401
+from pydantic import BaseModel as PydanticBaseModel, Field, PrivateAttr, root_validator  # noqa: F401
 from typing import Optional
-from udatetime import utcnow
 from uuid import uuid4
 
 from .model import BaseModel
-from .utils import orjson_dumps, orjson_loads
 
 
 class Update(PydanticBaseModel):
     # Basic fields
-    id: str = ""
-    created: Optional[datetime] = None
-    modified: Optional[datetime] = None
+    id: str = Field(default_factory=lambda: str(uuid4()))
+    created: Optional[datetime] = Field(default_factory=datetime.utcnow)
+    modified: Optional[datetime] = Field(default_factory=datetime.utcnow)
 
     # Advanced fields
     model: BaseModel
@@ -22,45 +19,21 @@ class Update(PydanticBaseModel):
     model_type: str = ""  # class type of `model`
     model_target: str = ""  # model target to which `model` should be sent to
 
-    @pydantic.validator("id", pre=True, always=True)
-    def default_id(cls, v, *, values, **kwargs):
-        return v or str(uuid4())
-
-    @pydantic.validator("created", pre=True, always=True)
-    def default_created(cls, v):
-        return v or utcnow()
-
-    @pydantic.validator("modified", pre=True, always=True)
-    def default_modified(cls, v, *, values, **kwargs):
-        return v or values["created"]
-
-    @pydantic.validator("model_target", pre=True, always=True)
-    def default_model_target(cls, v, *, values, **kwargs):
-        return v or values["model"].id
+    @root_validator(pre=True)
+    @classmethod
+    def apply_validation(cls, values):
+        values["id"] = values.get("id", str(uuid4()))
+        values["created"] = values.get("created", datetime.utcnow())
+        values["model_target"] = values.get("model_target", values["model"].id)
+        return values
 
     # pydantic configuration
     class Config:
-        # any types
         arbitrary_types_allowed = True
-
-        # allow mutation (see frozen as well)
-        allow_mutation = False
-
-        # pass around models by value
-        copy_on_model_validation = "deep"
-
-        # no undeclared fields
         extra = "forbid"
-
-        # frozen
         frozen = True
-
-        # access by attr
-        orm_mode = True
-
-        # json_encoders = {}
-        json_dumps = orjson_dumps
-        json_loads = orjson_loads
+        from_attributes = True
+        validate_assignment = True
 
     def __hash__(self):
         return hash(self.id)
