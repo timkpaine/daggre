@@ -20,7 +20,7 @@ install: prebuild  ## install to site-packages
 # Testing #
 ###########
 test: ## Clean and Make unit tests
-	python -m pytest -v dagred3/tests --junitxml=junit.xml --cov=dagred3 --cov-branch --cov-fail-under=75 --cov-report term-missing --cov-report xml
+	python -m pytest -v daggre/tests --junitxml=junit.xml --cov=daggre --cov-branch --cov-fail-under=75 --cov-report term-missing --cov-report xml
 
 tests: test
 
@@ -28,16 +28,16 @@ tests: test
 # Linting #
 ###########
 lint:  ## Black/flake8 python
-	python -m ruff check dagred3 setup.py
+	python -m ruff check daggre setup.py
 	python -m ruff check ../examples/*/*.py
-	python -m isort dagred3 setup.py --check
+	python -m isort daggre setup.py --check
 	python -m isort ../examples/*/*.py --check
 
 
 fix:  ## Black python
-	python -m ruff format dagred3 setup.py
+	python -m ruff format daggre setup.py
 	python -m ruff format ../examples/*/*.py
-	python -m isort dagred3 setup.py
+	python -m isort daggre setup.py
 	python -m isort ../examples/*/*.py
 
 format: fix
@@ -53,7 +53,7 @@ check-manifest: prebuild  ## run manifest checker for sdist
 	check-manifest -v
 
 annotate:  ## run mypy type annotation
-	mypy dagred3/
+	mypy daggre/
 
 ################
 # Distribution #
@@ -72,7 +72,7 @@ clean: ## clean the repository
 	find . -name "*.pyc" | xargs rm -rf
 	find . -name ".ipynb_checkpoints" | xargs  rm -rf
 	rm -rf .coverage coverage *.xml build dist *.egg-info lib node_modules .pytest_cache *.egg-info
-	rm -rf dagred3/labextension dagred3/nbextension/static/index*
+	rm -rf daggre/labextension daggre/nbextension/static/index*
 	git clean -fd
 
 ###########

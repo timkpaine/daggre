@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Graph, WebSocketClient, JSONTransport } from "dagre-d3-lite";
+import { Graph, WebSocketClient, JSONTransport } from "daggre";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const jst = new JSONTransport();
@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   jst.hosts(Graph);
   try {
     const graph = await handler.initial();
-    const div = document.querySelector("div.dagred3");
+    const div = document.querySelector("div.daggre");
     graph.render(div);
     await handler.handle();
   } catch {

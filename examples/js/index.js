@@ -1,10 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Graph } from "dagre-d3-lite";
+import { Graph } from "daggre";
 
 const SCALE = 10;
 
 document.addEventListener("DOMContentLoaded", () => {
-  const div = document.querySelector("div.dagred3");
+  const div = document.querySelector("div.daggre");
   const graph = new Graph({ direction: "left-to-right" });
 
   let begin = 0;
