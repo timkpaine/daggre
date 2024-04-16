@@ -6,6 +6,7 @@ import throttle from "lodash/throttle";
 import { Model } from "../transports";
 import { Node } from "./node";
 import { Edge } from "./edge";
+import { Shapes } from "./shapes";
 
 // Arrowheads - "normal", "vee", "undirected"
 // Curves - https://github.com/d3/d3-shape/blob/v3.2.0/README.md#curveBasis
@@ -128,6 +129,17 @@ export class Graph extends Model {
 
     // create renderer
     this._renderer = render();
+
+    // Add shapes from shape registry
+    // TODO better way?
+    Object.keys(Shapes.Node).forEach((name) => {
+      this._renderer.shapes()[name] = Shapes.Node[name];
+    });
+    Object.keys(Shapes.Arrow).forEach((name) => {
+      this._renderer.arrows()[name] = Shapes.Arrow[name];
+    });
+
+    // initialize renderpoint
     this._renderpoint = null;
 
     // create graph
@@ -237,6 +249,9 @@ export class Graph extends Model {
 
     // use `onto` if explicitly called, else use cached renderpoint
     const renderpoint = onto || this._renderpoint;
+    if (!renderpoint) {
+      return;
+    }
 
     // only run on first rendering
     if (!this._rendered) {
@@ -257,7 +272,7 @@ export class Graph extends Model {
     // render
     this._renderer(this._graph_g_inst, this._graph);
 
-    if (!this._rendered) {
+    if (!this._rendered && renderpoint) {
       // scale initial view
       // calculate initial scale modifier
       this._calculateInitialScale();

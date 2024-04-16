@@ -2,7 +2,6 @@ include LICENSE
 include README.md
 
 include pyproject.toml
-include Makefile
 
 graft dagred3
 graft dagred3/static
@@ -11,6 +10,8 @@ graft dagred3/static
 prune .pytest_cache
 prune .ruff_cache
 prune .mypy_cache
+exclude MANIFEST.in
+exclude Makefile
 
 # Patterns to exclude from any directory
 global-exclude *~

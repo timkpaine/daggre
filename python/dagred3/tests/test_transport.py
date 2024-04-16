@@ -1,15 +1,14 @@
-import time
 import pytest
-from typing import List, Dict
-from dagred3.transports import Transport, BaseModel
+import time
+from typing import Dict, List
+
+from dagred3.transports import BaseModel, Transport
 
 
-class MyModel(BaseModel):
-    ...
+class MyModel(BaseModel): ...
 
 
-class MyOtherModel(BaseModel):
-    ...
+class MyOtherModel(BaseModel): ...
 
 
 class MyParentModel(BaseModel):

@@ -1,7 +1,8 @@
-from dagred3 import BaseModel, PrivateAttr
+from typing import Optional
+
+from ..transports import BaseModel, PrivateAttr
 from .common import Arrowhead, Graph, LabelPosition, Line
 from .node import Node
-from typing import Optional
 
 
 class Edge(BaseModel):

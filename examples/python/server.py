@@ -1,16 +1,17 @@
 import sys
-import uvloop
 from asyncio import get_event_loop
+from random import choice, randint
+from threading import Thread
+from time import sleep
+
+import uvloop
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from random import randint, choice
-from time import sleep
-from threading import Thread
-
 
 sys.path.append("../../python")  # noqa
-from dagred3 import Graph, JSONTransport, StarletteWebSocketServer  # noqa: E402
+from dagred3 import JSONTransport  # noqa: E402
+from dagred3 import Graph, StarletteWebSocketServer
 
 
 def build_app():
@@ -73,12 +74,8 @@ def build_app():
         # then after just flicker the lights forever
         while True:
             index = randint(0, stop)
-            color = choice(
-                ["red", "blue", "green", "yellow", "orange", "black", "cyan", "magenta"]
-            )
-            backgroundColor = choice(
-                ["red", "blue", "green", "yellow", "orange", "black", "cyan", "magenta"]
-            )
+            color = choice(["red", "blue", "green", "yellow", "orange", "black", "cyan", "magenta"])
+            backgroundColor = choice(["red", "blue", "green", "yellow", "orange", "black", "cyan", "magenta"])
             graph.addNode(f"test{index}", color=color, backgroundColor=backgroundColor)
             sleep(interval)
 
@@ -89,9 +86,7 @@ def build_app():
 
     @app.websocket("/ws")
     async def websocket_endpoint(websocket: WebSocket):
-        handler = StarletteWebSocketServer(
-            websocket=websocket, transport=transport, model=graph
-        )
+        handler = StarletteWebSocketServer(websocket=websocket, transport=transport, model=graph)
         await handler.handle()
 
     # mount js assets from js dir
