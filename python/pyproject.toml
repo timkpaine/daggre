@@ -43,7 +43,6 @@ dependencies = [
 [project.optional-dependencies]
 develop = [
     "black>=23",
-    "check-manifest",
     "isort",
     "mypy",
     "ruff>=0.3,<0.4",
@@ -62,7 +61,6 @@ Homepage = "https://github.com/timkpaine/daggre"
 [tool.check-manifest]
 ignore = [
 	"daggre/static/**",
-	"js/**"
 ]
 
 [tool.hatch.build]
@@ -116,6 +114,7 @@ dependencies = [
 [tool.hatch.build.hooks.jupyter-builder.build-kwargs]
 path = "../js"
 build_cmd = "build"
+npm = "yarn"
 
 [tool.isort]
 combine_as_imports = true
@@ -128,7 +127,7 @@ known_first_party = "daggre"
 
 [tool.pytest.ini_options]
 asyncio_mode = 'strict'
-testpaths = 'pyproject_cookiecutter_example/tests'
+testpaths = 'daggre/tests'
 
 [tool.ruff]
 line-length = 150
