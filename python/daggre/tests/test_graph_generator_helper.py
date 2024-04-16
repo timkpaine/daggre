@@ -1,4 +1,4 @@
-from dagred3 import Graph
+from daggre import Graph
 
 
 def test_graph_generator_helper():

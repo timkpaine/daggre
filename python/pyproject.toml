@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "daggre"
-description = "A convenience layer on top of `dagre-d3` (`dagre-d3-es`), for use in `dagre-d3-lite`"
+description = "A convenience layer on top of `dagre-d3` (`dagre-d3-es`)."
 version = "0.1.0"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -56,18 +56,18 @@ test = [
 ]
 
 [project.urls]
-Repository = "https://github.com/timkpaine/dagre-d3-lite"
-Homepage = "https://github.com/timkpaine/dagre-d3-lite"
+Repository = "https://github.com/timkpaine/daggre"
+Homepage = "https://github.com/timkpaine/daggre"
 
 [tool.check-manifest]
 ignore = [
-	"dagred3/static/**",
+	"daggre/static/**",
 	"js/**"
 ]
 
 [tool.hatch.build]
 artifacts = [
-    "dagred3/static",
+    "daggre/static",
 ]
 
 [tool.hatch.build.sources]
@@ -75,7 +75,7 @@ src = "/"
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "/dagred3",
+    "/daggre",
     "/pyproject.toml",
     "/setup.py",
     "LICENSE",
@@ -90,7 +90,7 @@ exclude = [
 
 [tool.hatch.build.targets.wheel]
 include = [
-    "/dagred3",
+    "/daggre",
 ]
 exclude = [
     "/.mypy_cache",
@@ -102,12 +102,12 @@ exclude = [
 [tool.hatch.build.hooks.jupyter-builder]
 build-function = "hatch_jupyter_builder.npm_builder"
 ensured-targets = [
-    "dagred3/static/index.js",
-    "dagred3/static/index.css",
+    "daggre/static/index.js",
+    "daggre/static/index.css",
 ]
 skip-if-exists = [
-    "dagred3/static/index.js",
-    "dagred3/static/index.css",
+    "daggre/static/index.js",
+    "daggre/static/index.css",
 ]
 dependencies = [
     "hatch-jupyter-builder>=0.5.0",
@@ -124,7 +124,7 @@ line_length = 150
 profile = "black"
 default_section = "THIRDPARTY"
 sections = "FUTURE,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
-known_first_party = "dagred3"
+known_first_party = "daggre"
 
 [tool.pytest.ini_options]
 asyncio_mode = 'strict'
