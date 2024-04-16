@@ -1,6 +1,6 @@
 import { intersect } from "dagre-d3-es";
 
-export const house = (parent, bbox, node) => {
+const house = (parent, bbox, node) => {
   const w = bbox.width;
   const h = bbox.height;
   const points = [
@@ -17,7 +17,38 @@ export const house = (parent, bbox, node) => {
     .attr("transform", `translate(${-w / 2},${(h * 3) / 4})`);
 
   // eslint-disable-next-line no-param-reassign
-  node.intersect = (point) => intersect.polygon(node, points, point);
-
+  node.intersect = (point) =>
+    intersect.polygon.intersectPolygon(node, points, point);
   return shapeSvg;
+};
+
+const hollowpoint = (parent, id, edge, type) => {
+  const marker = parent
+    .append("marker")
+    .attr("id", id)
+    .attr("viewBox", "0 0 10 10")
+    .attr("refX", 9)
+    .attr("refY", 5)
+    .attr("markerUnits", "strokeWidth")
+    .attr("markerWidget", 8)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto");
+  const path = marker
+    .append("path")
+    .attr("d", "M 0 0 L 10 5 L 0 10 z")
+    .style("stroke-width", 1)
+    .style("stroke-dasharray", "1,0")
+    .style("fill", "#fff")
+    .style("stroke", "#333");
+  path.attr("style", edge[`${type}Style`]);
+  return marker;
+};
+
+export const Shapes = {
+  Node: {
+    house,
+  },
+  Arrow: {
+    hollowpoint,
+  },
 };

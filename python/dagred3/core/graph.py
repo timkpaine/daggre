@@ -1,5 +1,6 @@
 from typing import Any, Dict, List, Optional, Union, cast
-from dagred3 import BaseModel, Field
+
+from ..transports import BaseModel, Field
 from .common import Direction
 from .edge import Edge
 from .exceptions import MalformedArgument

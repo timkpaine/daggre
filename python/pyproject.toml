@@ -5,7 +5,7 @@ requires = [
 build-backend = "hatchling.build"
 
 [project]
-name = "dagred3"
+name = "daggre"
 description = "A convenience layer on top of `dagre-d3` (`dagre-d3-es`), for use in `dagre-d3-lite`"
 version = "0.1.0"
 readme = "README.md"
@@ -34,9 +34,8 @@ dependencies = [
     "aiohttp",
     "aiostream",
     "orjson",
-    "pydantic<2",
+    "pydantic",
     "starlette",
-    "udatetime",
     "uvicorn",
     "websockets",
 ]
@@ -45,8 +44,9 @@ dependencies = [
 develop = [
     "black>=23",
     "check-manifest",
+    "isort",
     "mypy",
-    "ruff",
+    "ruff>=0.3,<0.4",
     "pytest",
     "pytest-cov",
 ]
@@ -56,13 +56,8 @@ test = [
 ]
 
 [project.urls]
-repository = "https://github.com/timkpaine/dagre-d3-lite"
-homepage = "https://github.com/timkpaine/dagre-d3-lite"
-
-[tool.black]
-color = true
-line-length = 150
-target-version = ['py310']
+Repository = "https://github.com/timkpaine/dagre-d3-lite"
+Homepage = "https://github.com/timkpaine/dagre-d3-lite"
 
 [tool.check-manifest]
 ignore = [
@@ -75,16 +70,44 @@ artifacts = [
     "dagred3/static",
 ]
 
+[tool.hatch.build.sources]
+src = "/"
+
 [tool.hatch.build.targets.sdist]
-exclude = []
+include = [
+    "/dagred3",
+    "/pyproject.toml",
+    "/setup.py",
+    "LICENSE",
+    "README.md",
+]
+exclude = [
+    "/.mypy_cache",
+    "/.ruff_cache",
+    "/dist",
+    "/Makefile",
+]
+
+[tool.hatch.build.targets.wheel]
+include = [
+    "/dagred3",
+]
+exclude = [
+    "/.mypy_cache",
+    "/.ruff_cache",
+    "/pyproject.toml",
+    "/dist",
+]
 
 [tool.hatch.build.hooks.jupyter-builder]
 build-function = "hatch_jupyter_builder.npm_builder"
 ensured-targets = [
     "dagred3/static/index.js",
+    "dagred3/static/index.css",
 ]
 skip-if-exists = [
     "dagred3/static/index.js",
+    "dagred3/static/index.css",
 ]
 dependencies = [
     "hatch-jupyter-builder>=0.5.0",
@@ -94,22 +117,14 @@ dependencies = [
 path = "../js"
 build_cmd = "build"
 
-[tool.mypy]
-python_version = '3.10'
-# check_untyped_defs = true
-# disallow_any_generics = true
-# disallow_incomplete_defs = true
-# disallow_subclassing_any = true
-# disallow_untyped_decorators = true
-# disallow_untyped_calls = true
-# follow_imports = 'silent'
-ignore_missing_imports = true
-# no_implicit_reexport = true
-# show_error_codes = true
-# strict_optional = true
-# warn_redundant_casts = true
-# warn_unused_configs = true
-# warn_unused_ignores = true
+[tool.isort]
+combine_as_imports = true
+include_trailing_comma = true
+line_length = 150
+profile = "black"
+default_section = "THIRDPARTY"
+sections = "FUTURE,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
+known_first_party = "dagred3"
 
 [tool.pytest.ini_options]
 asyncio_mode = 'strict'
@@ -118,5 +133,5 @@ testpaths = 'pyproject_cookiecutter_example/tests'
 [tool.ruff]
 line-length = 150
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401", "F403"]

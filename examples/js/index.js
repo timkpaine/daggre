@@ -15,11 +15,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (i % 2 === 0) {
           graph.addNode(`test${i}`, { color: "red" });
         } else {
-          graph.addNode(`test${i}`, { backgroundColor: "lightblue" });
+          graph.addNode(`test${i}`, {
+            shape: "ellipse",
+            backgroundColor: "lightblue",
+          });
         }
         graph.addEdge(`test${i - 1}`, `test${i}`);
       } else {
-        graph.addNode(`test${i}`, { backgroundColor: "lightgreen" });
+        graph.addNode(`test${i}`, {
+          shape: "house",
+          backgroundColor: "lightgreen",
+        });
       }
 
       if (i > 2) {
@@ -28,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .forEach((_, j) => {
             if (i % (j + 2) === 0) {
               graph.addEdge(`test${i / (j + 2)}`, `test${i}`, {
-                arrowhead: "vee",
+                arrowhead: "hollowpoint",
                 line: "dash",
               });
             }
