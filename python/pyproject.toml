@@ -7,7 +7,7 @@ build-backend = "hatchling.build"
 [project]
 name = "daggre"
 description = "A convenience layer on top of `dagre-d3` (`dagre-d3-es`)."
-version = "0.1.0"
+version = "0.1.1"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.7"

@@ -1,6 +1,6 @@
 {
   "name": "daggre",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Convenience layer for dagre-d3",
   "main": "dist/iexjs.js",
   "repository": "git@github.com:timkpaine/daggre.git",
