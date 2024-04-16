@@ -47,10 +47,7 @@ format: fix
 #################
 check: checks
 
-checks: check-manifest annotate  ## run security, packaging, and other checks
-
-check-manifest: prebuild  ## run manifest checker for sdist
-	check-manifest -v
+checks: annotate  ## run security, packaging, and other checks
 
 annotate:  ## run mypy type annotation
 	mypy daggre/

@@ -260,6 +260,4 @@ typings/
 # Build files
 lib
 dist
-
-# JS Built assets
 python/daggre/static
