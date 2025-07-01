@@ -12,7 +12,7 @@ readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.7"
 authors = [
-    { name = "Tim Paine", email = "t.paine154@gmail.com" },
+    { name = "1kbgz", email = "dev@1kbgz.com" },
 ]
 keywords = [
     "Graph",
@@ -55,8 +55,8 @@ test = [
 ]
 
 [project.urls]
-Repository = "https://github.com/timkpaine/daggre"
-Homepage = "https://github.com/timkpaine/daggre"
+Repository = "https://github.com/1kbgz/daggre"
+Homepage = "https://github.com/1kbgz/daggre"
 
 [tool.check-manifest]
 ignore = [
